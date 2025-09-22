@@ -8,6 +8,8 @@ from typing import List, Optional
 import re
 from fastapi import FastAPI
 import json
+import os
+import uvicorn
 
 app = FastAPI()
 
@@ -191,5 +193,10 @@ def get_dosha(Dosha: str,disease: Optional[str] = None):
         return DietPlan(**filtered_meal_plan)
 
     return DoshaPlan
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("dietplan:app", host="0.0.0.0", port=port)
+
 
 
