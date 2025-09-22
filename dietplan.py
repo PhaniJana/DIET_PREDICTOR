@@ -1,4 +1,4 @@
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
@@ -43,6 +43,7 @@ Instructions:
 4. Separate vegetarian and non-vegetarian items.
 5. Randomly select foods for each meal, without repeating the same food.
 6. From Avoid foods, pick a few representative items to list separately.
+7. List Maximum 10 Items for each
 
 IMPORTANT: Output must be valid JSON matching this schema exactly:
 {{
@@ -123,7 +124,8 @@ def filter_meal_plan(meal_plan, patient_diseases, food_disease_map):
 # ----------------- API Endpoint -----------------
 @app.get("/{Dosha}", response_model=DietPlan)
 def get_dosha(Dosha: str,disease: Optional[str] = None):        
-    embeddings = OllamaEmbeddings(model="gemma:2b")
+    model_name = "sentence-transformers/all-MiniLM-L6-v2"
+    embeddings = HuggingFaceEmbeddings(model_name=model_name)
     load_db = FAISS.load_local('fiass_index1', embeddings, allow_dangerous_deserialization=True)
     retriever = load_db.as_retriever(search_kwargs={"k": 90})
 

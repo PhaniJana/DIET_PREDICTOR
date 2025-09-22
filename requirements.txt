@@ -5,3 +5,7 @@ faiss-cpu
 pydantic
 fastapi
 uvicorn
+langchain-huggingface 
+transformers 
+torch
+sentence-transformers
